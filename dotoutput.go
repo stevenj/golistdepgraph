@@ -44,9 +44,11 @@ func dotOutput(pkgs map[string]JsonObject, dc DepContext, out io.Writer) {
 
 		var color string
 		if pkg.GetBool("Goroot") {
-			color = "palegreen"
+			color = "plum"
 		} else if len(pkg.GetStringSlice("CgoFiles")) > 0 {
 			color = "darkgoldenrod1"
+		} else if pkg.GetObject("Module").GetBool("Main") {
+			color = "palegreen"
 		} else {
 			color = "paleturquoise"
 		}
@@ -60,6 +62,7 @@ func dotOutput(pkgs map[string]JsonObject, dc DepContext, out io.Writer) {
 		 }
 		// what about pkg.GetBool("Incomplete"), pkg.GetBool("Stale"), pkg.GetString("StaleReason")?
 
+		//fmt.Fprintf(out, "%s", pkg)
 		fmt.Fprintf(out, "_%d [label=\"%s\" style=\"filled\" color=\"%s\" fontcolor=\"%s\"];\n", pkgId, pkg.GetString("ImportPath"), color, fontColor)
 
 		if pkg.GetBool("Goroot") && !dc.DelveGoroot {

@@ -69,6 +69,19 @@ func (jo JsonObject) GetBool(key string) bool {
 	return false
 }
 
+func (jo JsonObject) GetObject(key string) JsonObject {
+	i, ok := jo[key]
+	if !ok {
+		return NewJsonObject()
+	}
+	switch v := i.(type) {
+	case map[string]interface{}:
+		return v
+	}
+
+	return NewJsonObject()
+}
+
 type JsonSeq []JsonObject
 
 func NewJsonSeq(buf []byte) JsonSeq {
