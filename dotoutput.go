@@ -27,7 +27,7 @@ func dotOutput(pkgs map[string]JsonObject, dc DepContext, out io.Writer) {
 	//	importMap[pkg.GetString("ImportPath")] = index
 	//}
 	importPaths := []string{}
-	for importPath, _ := range pkgs {
+	for importPath := range pkgs {
 		importPaths = append(importPaths, importPath)
 	}
 	sort.Strings(importPaths)
