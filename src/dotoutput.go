@@ -31,7 +31,7 @@ func dotOutput(pkgs map[string]JsonObject, dc DepContext, out io.Writer) {
 		importPaths = append(importPaths, importPath)
 	}
 	sort.Strings(importPaths)
-	idState := &IdState{ids:make(map[string]int)}
+	idState := &IdState{ids: make(map[string]int)}
 
 	fmt.Fprintln(out, "digraph G {")
 	for _, importPath := range importPaths {
@@ -43,7 +43,9 @@ func dotOutput(pkgs map[string]JsonObject, dc DepContext, out io.Writer) {
 		}
 
 		var color string
-		if pkg.GetBool("Goroot") {
+		if dc.IsHighlighted(pkg) {
+			color = "moccasin"
+		} else if pkg.GetBool("Goroot") {
 			color = "plum"
 		} else if len(pkg.GetStringSlice("CgoFiles")) > 0 {
 			color = "darkgoldenrod1"
@@ -55,11 +57,11 @@ func dotOutput(pkgs map[string]JsonObject, dc DepContext, out io.Writer) {
 		var fontColor string
 		if pkg.GetBool("Incomplete") {
 			fontColor = "red"
-		 } else if pkg.GetBool("Stale") {
+		} else if pkg.GetBool("Stale") {
 			fontColor = "blue"
-		 } else {
-			 fontColor = "black"
-		 }
+		} else {
+			fontColor = "black"
+		}
 		// what about pkg.GetBool("Incomplete"), pkg.GetBool("Stale"), pkg.GetString("StaleReason")?
 
 		//fmt.Fprintf(out, "%s", pkg)

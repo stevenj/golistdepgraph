@@ -84,3 +84,8 @@ func (d DepContext) IsIgnored(pkg JsonObject) bool {
 	importPath := pkg.GetString("ImportPath")
 	return d.Ignored[importPath] || (pkg.GetBool("Goroot") && d.IgnoreStdlib) || hasPrefixes(importPath, d.IgnoredPrefixes)
 }
+
+func (d DepContext) IsHighlighted(pkg JsonObject) bool {
+	importPath := pkg.GetString("ImportPath")
+	return hasPrefixes(importPath, d.HighlightPrefixes)
+}
